@@ -6,12 +6,30 @@ export class AuthController {
     try {
       const { id, password } = req.body;
 
-      const signUpResponse = await AuthService.SignUp(id, password)
+      const userData = await AuthService.SignUp(id, password);
 
-      res.json(signUpResponse)
+      res.json(userData);
     } catch (e) {
       next(e);
     }
   }
-  
+
+  static async SignIn(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const {} = req.body;
+
+      res.json();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+
+  static async NewToken(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+
+    } catch (e) {
+      next(e)
+    }
+  }
 }

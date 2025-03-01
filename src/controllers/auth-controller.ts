@@ -7,6 +7,7 @@ export class AuthController {
       const { id, password } = req.body;
 
       const userData = await AuthService.SignUp(id, password);
+      res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
 
       res.json(userData);
     } catch (e) {
@@ -29,7 +30,23 @@ export class AuthController {
     try {
 
     } catch (e) {
-      next(e)
+      next(e);
+    }
+  }
+
+
+  static async Logut(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { refreshToken } = req.cookies;
+
+      console.log(refreshToken)
+
+      const logoutData = await AuthService.Logout(refreshToken)
+      res.clearCookie("refreshToken");
+
+      res.json(logoutData);
+    } catch (e) {
+      next(e);
     }
   }
 }

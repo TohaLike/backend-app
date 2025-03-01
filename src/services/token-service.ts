@@ -1,21 +1,18 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { JwtResponse } from "../types";
+import jwt from "jsonwebtoken";
+import { JwtResponse, TokenProps } from "../types";
+import { prisma } from "./prisma-service";
 
 export class TokenService {
-  generateTokens(payload: object) {
-    if (!process.env.JWT_ACCESS_SECRET || !process.env.JWT_REFRESH_SECRET) return;
-
-    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: "10m" });
-    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: "30d" });
+  static GenerateTokens(payload: object) {
+    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, { expiresIn: "10m" });
+    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: "30d" });
 
     return { accessToken, refreshToken }
   }
 
-  validateAccessToken(token: string): JwtResponse {
+  static ValidateAccessToken(token: string): JwtResponse {
     try {
-      if (!process.env.JWT_ACCESS_SECRET) return;
-
-      const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+      const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET!)
 
       return userData;
     } catch (e) {
@@ -23,15 +20,35 @@ export class TokenService {
     }
   }
 
-  validateRefreshToken(token: string): JwtResponse {
+  static ValidateRefreshToken(token: string): JwtResponse {
     try {
-      if (!process.env.JWT_REFRESH_SECRET) return;
-
-      const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+      const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET!)
 
       return userData;
     } catch (e) {
       return null;
     }
+  }
+
+  static async SaveToken(userId: string, refreshToken: string) {
+    const tokenData = await prisma.token.findUnique({ where: { userId } })
+
+    if (tokenData) {
+      const savedToken = await prisma.token.update({ where: { userId }, data: { refreshToken } });
+      return savedToken;
+    }
+
+    const token = await prisma.token.create({ data: { userId, refreshToken }});
+    return token;
+  }
+
+  static async DeleteToken(refreshToken: string) {
+    const tokenData = await prisma.token.delete({ where: { refreshToken } });
+    return tokenData;
+  }
+
+  static async FindToken(refreshToken: string) {
+    const tokenData = await prisma.token.findUnique({ where: { refreshToken } });
+    return tokenData;
   }
 }

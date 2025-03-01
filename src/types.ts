@@ -7,9 +7,13 @@ export interface ControllerProps {
   next: NextFunction;
 }
 
-
 export interface UserProps {
   id: string;
 }
 
-export type JwtResponse = JwtPayload | string | null | undefined 
+export type JwtResponse = JwtPayload | string | null | undefined;
+
+export interface TokenProps {
+  accessToken: string;
+  refreshToken: string;
+}

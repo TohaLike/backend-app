@@ -25,5 +25,6 @@ model File {
   extension  String
   mimeType   String
   size       Int
+  path       String
   uploadedAt DateTime @default(now())
 }

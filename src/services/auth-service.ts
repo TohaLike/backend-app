@@ -57,7 +57,7 @@ export class AuthService {
 
     await TokenService.SaveToken(userDto?.id, tokens?.refreshToken);
 
-    return {...tokens, user: userDto}
+    return { ...tokens, user: userDto }
   }
 
   static async Logout(refreshToken: string) {

@@ -40,7 +40,7 @@ app.use(ErrorMiddleware);
 async function main() {
   try {
     await prisma.$connect();
-    console.log("✅ Connected to MySQL");
+    console.log("Connected to MySQL");
     app.listen(PORT, () =>
       console.log(`Server has been started on port ${PORT}`)
     );

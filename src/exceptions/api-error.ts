@@ -15,4 +15,8 @@ export class ApiError extends Error {
   static BadRequest(message: string, errors: string[] = []) {
     return new ApiError(400, message, errors);
   }
+
+  static FileNotFound() {
+    return new ApiError(404, "Файл не найден");
+  }
 }

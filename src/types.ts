@@ -35,3 +35,6 @@ export const MyJwt = {
 export interface IGetUserAuthInfoRequest extends Request {
   user?: string | JwtPayload;
 }
+
+
+export type FileMulter = Express.Multer.File

@@ -24,12 +24,12 @@ router.get("/file/list", FileController.FileList);
 // если параметр пустой. Номер страницы указан в параметре page,
 // по умолчанию 1, если не задан
 
-// router.get("/file/:id"); // вывод информации о выбранном файле
-// router.get("/file/download/:id"); // скачивание конкретного файла
+router.get("/file/:id", FileController.FileInfo); // вывод информации о выбранном файле
+router.get("/file/download/:id", FileController.FileDownload); // скачивание конкретного файла
 
 // router.delete("/file/delete/:id"); //удаляет документ из базы и локального хранилища
 
-// router.put("/file/update/:id"); // обновление текущего документа на новый в базе и локальном хранилище
+router.put("/file/update/:id", FileController.FileUpdate); // обновление текущего документа на новый в базе и локальном хранилище
 
 router.get("/test", AuthMiddleware, AuthController.Test);
 

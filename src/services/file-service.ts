@@ -64,14 +64,14 @@ export class FileService {
   static async FileUpdate(id: number, file?: FileMulter) {
     const fileData = await prisma.file.findUnique({ where: { id } });
 
-    console.log(fileData)
+    if (!fileData || !file) {
+      rimraf(String(file?.path));
+      throw ApiError.FileNotFound();
+    }
 
-    if (!fileData || !file) throw ApiError.FileNotFound();
+    rimraf(fileData?.path);
 
-    const oldFilePath = path.join(__dirname, "../files", fileData?.path);
     const extension = path.extname(file?.originalname);
-
-    rimraf(oldFilePath);
 
     const fileUpdate = prisma.file.update({
       where: { id: id },

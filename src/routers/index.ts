@@ -2,6 +2,7 @@ import { Router } from "express";
 import { AuthController } from "../controllers/auth-controller";
 import { FileController } from "../controllers/file-controller";
 import AuthMiddleware from "../middlewares/auth-middleware";
+import { UserController } from "../controllers/user-controller";
 
 const router: Router = Router();
 
@@ -13,7 +14,7 @@ router.post("/file/upload", FileController.UploadFile);
 // добавление нового файла в систему
 // и запись параметров файла в базу: название, расширение, MIME type, размер, дата загрузки;
 
-// router.get("/info"); // возвращает id пользователя
+router.get("/info", AuthMiddleware, UserController.UserInfo); // возвращает id пользователя
 router.get("/logout", AuthController.Logut); // выйти из системы
 
 router.get("/file/list", FileController.FileList);
@@ -31,6 +32,6 @@ router.delete("/file/delete/:id", FileController.FileDelete); //удаляет �
 
 router.put("/file/update/:id", FileController.FileUpdate); // обновление текущего документа на новый в базе и локальном хранилище
 
-// router.get("/test", AuthMiddleware, AuthController.Test);
+router.get("/test", AuthMiddleware, AuthController.Test);
 
 export default router;

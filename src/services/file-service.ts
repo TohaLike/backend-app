@@ -86,4 +86,16 @@ export class FileService {
 
     return fileUpdate;
   }
+
+  static async FileDelete(id: number) {
+    const fileData = await prisma.file.findUnique({ where: { id } });
+
+    if (!fileData) throw ApiError.FileNotFound();
+
+    const deletedFile = await prisma.file.delete({ where: { id } });
+
+    rimraf(fileData?.path);
+
+    return deletedFile;
+  }
 }

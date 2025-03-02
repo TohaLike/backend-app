@@ -84,4 +84,18 @@ export class FileController {
       next(e);
     }
   }
+
+  static async FileDelete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const fileId = Number(id);
+
+      const fileDelete = await FileService.FileDelete(fileId)
+
+      res.json(fileDelete);
+    } catch (e) {
+      next(e);
+    }
+  }
 }

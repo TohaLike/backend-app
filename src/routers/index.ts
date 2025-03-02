@@ -27,10 +27,10 @@ router.get("/file/list", FileController.FileList);
 router.get("/file/:id", FileController.FileInfo); // вывод информации о выбранном файле
 router.get("/file/download/:id", FileController.FileDownload); // скачивание конкретного файла
 
-// router.delete("/file/delete/:id"); //удаляет документ из базы и локального хранилища
+router.delete("/file/delete/:id", FileController.FileDelete); //удаляет документ из базы и локального хранилища
 
 router.put("/file/update/:id", FileController.FileUpdate); // обновление текущего документа на новый в базе и локальном хранилище
 
-router.get("/test", AuthMiddleware, AuthController.Test);
+// router.get("/test", AuthMiddleware, AuthController.Test);
 
 export default router;

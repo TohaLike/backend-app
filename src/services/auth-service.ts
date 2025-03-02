@@ -2,20 +2,18 @@ import { UserDto } from "../dtos/user-dto";
 import { prisma } from "./prisma-service";
 import { TokenService } from "./token-service";
 import { TokenProps, UserProps } from "../types";
+import { ApiError } from "../exceptions/api-error";
 import bcrypt from "bcrypt";
 
 export class AuthService {
   static async SignUp(id: string, password: string) {
     const candidate = await prisma.user.findUnique({ where: { id } });
 
-    if (candidate) throw new Error("Такой юзер уже есть");
+    if (candidate) throw ApiError.BadRequest(`Пользователь с таким id: '${id}' уже есть`);
 
     const hashPassword = await bcrypt.hash(password, 3);
-
     const userData = await prisma.user.create({ data: { id, password: hashPassword } });
-
     const userDto = new UserDto(userData);
-
     const tokens = TokenService.GenerateTokens({ ...userDto });
 
     await TokenService.SaveToken(userDto?.id, tokens?.refreshToken);
@@ -27,14 +25,13 @@ export class AuthService {
   static async SignIn(id: string, password: string) {
     const candidate = await prisma.user.findUnique({ where: { id } })
 
-    if (!candidate) throw new Error("Такого пользователя нет");
+    if (!candidate) throw ApiError.BadRequest(`Пользователь с таким id: ${id} не зарегистрирован`)
 
     const isEqualPassword = await bcrypt.compare(password, candidate?.password);
 
-    if (!isEqualPassword) throw new Error("Неверный пароль");
+    if (!isEqualPassword) throw ApiError.BadRequest("Неверный пароль");
 
     const userDto = new UserDto(candidate);
-
     const tokens = TokenService.GenerateTokens({ ...userDto });
 
     await TokenService.SaveToken(userDto?.id, tokens?.refreshToken);
@@ -44,16 +41,16 @@ export class AuthService {
 
 
   static async NewToken(refreshToken: string) {
-    if (!refreshToken) throw new Error("Пользователь не авторизован");
-
+    if (!refreshToken) throw ApiError.UnauthorizedError();
+    
     const userData = TokenService.ValidateRefreshToken(refreshToken);
     const tokenFromDB = await TokenService.FindToken(refreshToken);
 
-    if (!userData || !tokenFromDB) throw new Error("Пользователь не авторизован");
+    if (!userData || !tokenFromDB) throw ApiError.UnauthorizedError();
   
     const candidate = await prisma.user.findUnique({ where: { id: userData.id }})
 
-    if (!candidate) throw new Error("Пользователь не найден");
+    if (!candidate) throw ApiError.BadRequest("Пользователь не найден");
 
     const userDto = new UserDto(candidate);
     const tokens = TokenService.GenerateTokens({ ...userDto });
@@ -68,5 +65,8 @@ export class AuthService {
     return token;
   }
 
-
+  static async Users() {
+    const response = await prisma.user.findMany();
+    return response;
+  }
 }

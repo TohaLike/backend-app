@@ -18,6 +18,7 @@ export class AuthController {
   static async SignIn(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id, password } = req.body;
+      const userAgent = req.headers["user-agent"];
 
       const userData = await AuthService.SignIn(id, password)
       res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
@@ -51,6 +52,17 @@ export class AuthController {
       res.clearCookie("refreshToken");
 
       res.json(logoutData);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+
+  static async Test(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const result = await AuthService.Users()
+
+      res.json(result)
     } catch (e) {
       next(e);
     }

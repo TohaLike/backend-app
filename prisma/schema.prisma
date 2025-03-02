@@ -18,3 +18,12 @@ model Token {
   userId       String @unique
   refreshToken String @unique
 }
+
+model File {
+  id         Int      @id @default(autoincrement())
+  name       String
+  extension  String
+  mimeType   String
+  size       Int
+  uploadedAt DateTime @default(now())
+}

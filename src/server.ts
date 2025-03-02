@@ -3,6 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import router from "./routers";
 import { prisma } from "./services/prisma-service";
+import { ErrorMiddleware } from "./middlewares/error-middleware";
 import cors from "cors";
 
 dotenv.config();
@@ -12,11 +13,12 @@ const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: "*" }))
+app.use(cors({ credentials: true, origin: "*" }));
 
 
 
 app.use("/api", router);
+app.use(ErrorMiddleware);
 
 async function main() {
   try {

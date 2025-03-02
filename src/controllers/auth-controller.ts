@@ -17,9 +17,12 @@ export class AuthController {
 
   static async SignIn(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const {} = req.body;
+      const { id, password } = req.body;
 
-      res.json();
+      const userData = await AuthService.SignIn(id, password)
+      res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+
+      res.json(userData);
     } catch (e) {
       next(e);
     }
@@ -28,7 +31,12 @@ export class AuthController {
 
   static async NewToken(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const { refreshToken } = req.cookies;
 
+      const tokenData = await AuthService.NewToken(refreshToken);
+      res.cookie("refreshToken", tokenData?.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+
+      res.json(tokenData);
     } catch (e) {
       next(e);
     }
@@ -38,8 +46,6 @@ export class AuthController {
   static async Logut(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { refreshToken } = req.cookies;
-
-      console.log(refreshToken)
 
       const logoutData = await AuthService.Logout(refreshToken)
       res.clearCookie("refreshToken");

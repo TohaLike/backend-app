@@ -1,37 +1,24 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth-controller";
 import { FileController } from "../controllers/file-controller";
-import AuthMiddleware from "../middlewares/auth-middleware";
 import { UserController } from "../controllers/user-controller";
+import AuthMiddleware from "../middlewares/auth-middleware";
 
 const router: Router = Router();
 
 router.post("/signup", AuthController.SignUp);
 router.post("/signin", AuthController.SignIn);
 router.post("/signin/new_token", AuthController.NewToken);
-
 router.post("/file/upload", FileController.UploadFile);
-// добавление нового файла в систему
-// и запись параметров файла в базу: название, расширение, MIME type, размер, дата загрузки;
 
-router.get("/info", AuthMiddleware, UserController.UserInfo); // возвращает id пользователя
-router.get("/logout", AuthController.Logut); // выйти из системы
-
+router.get("/file/:id", FileController.FileInfo);
 router.get("/file/list", FileController.FileList);
-// выводит список файлов и их параметров из базы
-// с использованием пагинации с размером страницы,
-// указанного в передаваемом параметре list_size,
-// по умолчанию 10 записей на страницу,
-// если параметр пустой. Номер страницы указан в параметре page,
-// по умолчанию 1, если не задан
+router.get("/info", AuthMiddleware, UserController.UserInfo);
+router.get("/logout", AuthController.Logut);
+// router.get("/test", AuthMiddleware, AuthController.Test);
 
-router.get("/file/:id", FileController.FileInfo); // вывод информации о выбранном файле
-router.get("/file/download/:id", FileController.FileDownload); // скачивание конкретного файла
-
-router.delete("/file/delete/:id", FileController.FileDelete); //удаляет документ из базы и локального хранилища
-
-router.put("/file/update/:id", FileController.FileUpdate); // обновление текущего документа на новый в базе и локальном хранилище
-
-router.get("/test", AuthMiddleware, AuthController.Test);
+router.get("/file/download/:id", FileController.FileDownload);
+router.delete("/file/delete/:id", FileController.FileDelete);
+router.put("/file/update/:id", FileController.FileUpdate);
 
 export default router;

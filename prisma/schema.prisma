@@ -15,8 +15,11 @@ model User {
 
 model Token {
   user         User   @relation(fields: [userId], references: [id])
-  userId       String @unique
+  userId       String 
   refreshToken String @unique
+  deviceInfo   String 
+  
+  @@unique([userId, deviceInfo])
 }
 
 model File {

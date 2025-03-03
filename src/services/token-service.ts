@@ -28,15 +28,19 @@ export class TokenService {
     }
   }
 
-  static async SaveToken(userId: string, refreshToken: string) {
-    const tokenData = await prisma.token.findUnique({ where: { userId } })
+  static async SaveToken(userId: string, refreshToken: string, deviceInfo: string) {
+    if (!deviceInfo) return;
+
+    const tokenData = await prisma.token.findUnique({ where: { userId_deviceInfo: { userId, deviceInfo } } })
+
+    // console.log(tokenData)
 
     if (tokenData) {
-      const savedToken = await prisma.token.update({ where: { userId }, data: { refreshToken } });
+      const savedToken = await prisma.token.update({ where: { userId_deviceInfo: { userId, deviceInfo }  }, data: { refreshToken } });
       return savedToken;
     }
 
-    const token = await prisma.token.create({ data: { userId, refreshToken }});
+    const token = await prisma.token.create({ data: { userId, refreshToken, deviceInfo }});
     return token;
   }
 

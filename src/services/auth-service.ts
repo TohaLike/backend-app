@@ -6,7 +6,7 @@ import { ApiError } from "../exceptions/api-error";
 import bcrypt from "bcrypt";
 
 export class AuthService {
-  static async SignUp(id: string, password: string) {
+  static async SignUp(id: string, password: string, userAgent: any) {
     const candidate = await prisma.user.findUnique({ where: { id } });
 
     if (candidate) throw ApiError.BadRequest(`Пользователь с таким id: '${id}' уже есть`);
@@ -16,13 +16,13 @@ export class AuthService {
     const userDto = new UserDto(userData);
     const tokens = TokenService.GenerateTokens({ ...userDto });
 
-    await TokenService.SaveToken(userDto?.id, tokens?.refreshToken);
+    await TokenService.SaveToken(userDto?.id, tokens?.refreshToken, userAgent);
 
     return { ...tokens, user: userDto };
   }
 
 
-  static async SignIn(id: string, password: string) {
+  static async SignIn(id: string, password: string, userAgent: any) {
     const candidate = await prisma.user.findUnique({ where: { id } })
 
     if (!candidate) throw ApiError.BadRequest(`Пользователь с таким id: ${id} не зарегистрирован`)
@@ -34,13 +34,13 @@ export class AuthService {
     const userDto = new UserDto(candidate);
     const tokens = TokenService.GenerateTokens({ ...userDto });
 
-    await TokenService.SaveToken(userDto?.id, tokens?.refreshToken);
+    await TokenService.SaveToken(userDto?.id, tokens?.refreshToken, userAgent);
 
     return { ...tokens, user: userDto };
   }
 
 
-  static async NewToken(refreshToken: string) {
+  static async NewToken(refreshToken: string, userAgent: any) {
     if (!refreshToken) throw ApiError.UnauthorizedError();
     
     const userData = TokenService.ValidateRefreshToken(refreshToken);
@@ -55,7 +55,7 @@ export class AuthService {
     const userDto = new UserDto(candidate);
     const tokens = TokenService.GenerateTokens({ ...userDto });
 
-    await TokenService.SaveToken(userDto?.id, tokens?.refreshToken);
+    await TokenService.SaveToken(userDto?.id, tokens?.refreshToken, userAgent);
 
     return { ...tokens, user: userDto }
   }

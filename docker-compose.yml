@@ -1,4 +1,16 @@
 services:
+  backend: 
+    build:
+      context: .
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - mysql
+      - redis-container
+    networks:
+      - backend-network
   mysql:
     image: mysql:8
     container_name: mysql-container
@@ -31,3 +43,5 @@ networks:
 
 volumes:
   mysql_data:
+
+

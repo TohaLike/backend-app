@@ -6,7 +6,7 @@ import path from "path";
 import fs from "fs";
 
 export class FileService {
-  static async UploadFile(file?: FileMulter) {
+  static async uploadFile(file?: FileMulter) {
     if (!file) throw ApiError.BadRequest("Файл не выбран");
 
     const extension = path.extname(file?.originalname);
@@ -24,7 +24,7 @@ export class FileService {
     return uploadFile;
   }
 
-  static async FileList(page: number, list_size: number) {
+  static async fileList(page: number, list_size: number) {
     const startIndex = (page - 1) * list_size;
 
     const fileData = await prisma.file.findMany({
@@ -35,7 +35,7 @@ export class FileService {
     return fileData;
   }
 
-  static async FileInfo(id: number) {
+  static async fileInfo(id: number) {
     if (!id) throw ApiError.BadRequest("Файл не выбран");
 
     const fileData = await prisma.file.findUnique({ where: { id } });
@@ -45,22 +45,21 @@ export class FileService {
     return fileData;
   }
 
-  static async FileDownload(id: number) {
+  static async fileDownload(id: number) {
     const fileData = await prisma.file.findUnique({ where: { id } });
 
     if (!fileData) throw ApiError.FileNotFound();
 
     const filePath = fileData?.path;
 
-    if (!fs.existsSync(filePath))
-      throw ApiError.BadRequest("Файл отсутствует на сервере");
+    if (!fs.existsSync(filePath)) throw ApiError.BadRequest("Файл отсутствует на сервере");
 
     const fileStream = fs.createReadStream(filePath);
 
     return { fileData, fileStream };
   }
 
-  static async FileUpdate(id: number, file?: FileMulter) {
+  static async fileUpdate(id: number, file?: FileMulter) {
     const fileData = await prisma.file.findUnique({ where: { id } });
 
     if (!fileData || !file) {
@@ -86,7 +85,7 @@ export class FileService {
     return fileUpdate;
   }
 
-  static async FileDelete(id: number) {
+  static async fileDelete(id: number) {
     const fileData = await prisma.file.findUnique({ where: { id } });
 
     if (!fileData) throw ApiError.FileNotFound();

@@ -4,7 +4,7 @@ import { validationResult } from "express-validator";
 import { ApiError } from "../exceptions/api-error";
 
 export class AuthController {
-  static async SignUp(req: Request, res: Response, next: NextFunction): Promise<void> {
+  static async signUp(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const errors = validationResult(req);
 
@@ -25,7 +25,7 @@ export class AuthController {
     }
   }
 
-  static async SignIn(req: Request, res: Response, next: NextFunction): Promise<void> {
+  static async signIn(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const errors = validationResult(req);
 
@@ -48,7 +48,7 @@ export class AuthController {
   }
 
 
-  static async NewToken(req: Request, res: Response, next: NextFunction): Promise<void> {
+  static async newToken(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { refreshToken } = req.cookies;
       const userAgent = req.headers["user-agent"];
@@ -64,7 +64,7 @@ export class AuthController {
   }
 
 
-  static async Logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+  static async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { refreshToken, accessToken } = req.cookies;
 
@@ -78,7 +78,7 @@ export class AuthController {
   }
 
 
-  static async Test(req: Request, res: Response, next: NextFunction): Promise<void> {
+  static async test(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const result = await AuthService.users()
 

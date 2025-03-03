@@ -6,7 +6,7 @@ export class FileController {
     try {
       const file = req.file;
 
-      const uplaodFile = await FileService.UploadFile(file);
+      const uplaodFile = await FileService.uploadFile(file);
 
       res.json(uplaodFile);
     } catch (e) {
@@ -21,7 +21,7 @@ export class FileController {
       const pageNumber = Number(page) || 1;
       const pageSize = Number(list_size) || 10;
 
-      const fileList = await FileService.FileList(pageNumber, pageSize);
+      const fileList = await FileService.fileList(pageNumber, pageSize);
 
       res.json(fileList);
     } catch (e) {
@@ -35,7 +35,7 @@ export class FileController {
 
       const fileId = Number(id);
 
-      const fileData = await FileService.FileInfo(fileId);
+      const fileData = await FileService.fileInfo(fileId);
 
       res.json(fileData);
     } catch (e) {
@@ -49,7 +49,7 @@ export class FileController {
 
       const fileId = Number(id);
 
-      const { fileData, fileStream } = await FileService.FileDownload(fileId);
+      const { fileData, fileStream } = await FileService.fileDownload(fileId);
 
       res.setHeader("Content-type", fileData?.mimeType || "application/octet-stream");
       res.setHeader("Content-Length", fileData?.size);
@@ -77,7 +77,7 @@ export class FileController {
 
       const fileId = Number(id);
 
-      const fileUpdate = await FileService.FileUpdate(fileId, file);
+      const fileUpdate = await FileService.fileUpdate(fileId, file);
 
       res.json(fileUpdate);
     } catch (e) {
@@ -91,7 +91,7 @@ export class FileController {
 
       const fileId = Number(id);
 
-      const fileDelete = await FileService.FileDelete(fileId)
+      const fileDelete = await FileService.fileDelete(fileId)
 
       res.json(fileDelete);
     } catch (e) {

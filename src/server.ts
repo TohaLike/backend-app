@@ -3,6 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import router from "./routers";
 import { prisma } from "./services/prisma-service";
+// import { createClient } from "ioredis";
 import ErrorMiddleware from "./middlewares/error-middleware";
 import cors from "cors";
 import multer from "multer";
@@ -12,6 +13,10 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+// const redis = createClient({
+//   url: process.env.REDIS_URL || "redis://localhost:6379",
+// });
+
 
 const fileConfig = multer.diskStorage({
   destination: (req, file, cb) => {

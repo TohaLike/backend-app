@@ -33,8 +33,6 @@ export class TokenService {
 
     const tokenData = await prisma.token.findUnique({ where: { userId_deviceInfo: { userId, deviceInfo } } })
 
-    // console.log(tokenData)
-
     if (tokenData) {
       const savedToken = await prisma.token.update({ where: { userId_deviceInfo: { userId, deviceInfo }  }, data: { refreshToken } });
       return savedToken;

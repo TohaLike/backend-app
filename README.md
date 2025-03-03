@@ -6,8 +6,6 @@ Backend API Service ErpAero
 ```sh
 git clone https://github.com/TohaLike/backend-app.git
 ```
-cd backend-app
-
 2. Установка зависимостей
 ```sh
 npm install

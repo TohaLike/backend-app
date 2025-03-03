@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { FileService } from "../services/file-service";
 
 export class FileController {
-  static async UploadFile(req: Request, res: Response, next: NextFunction) {
+  static async uploadFile(req: Request, res: Response, next: NextFunction) {
     try {
       const file = req.file;
 
@@ -14,7 +14,7 @@ export class FileController {
     }
   }
 
-  static async FileList(req: Request, res: Response, next: NextFunction) {
+  static async fileList(req: Request, res: Response, next: NextFunction) {
     try {
       const { page, list_size } = req.query;
 
@@ -29,7 +29,7 @@ export class FileController {
     }
   }
 
-  static async FileInfo(req: Request, res: Response, next: NextFunction) {
+  static async fileInfo(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
@@ -43,7 +43,7 @@ export class FileController {
     }
   }
 
-  static async FileDownload(req: Request, res: Response, next: NextFunction) {
+  static async fileDownload(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
@@ -70,7 +70,7 @@ export class FileController {
     }
   }
 
-  static async FileUpdate(req: Request, res: Response, next: NextFunction) {
+  static async fileUpdate(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const file = req.file;
@@ -85,7 +85,7 @@ export class FileController {
     }
   }
 
-  static async FileDelete(req: Request, res: Response, next: NextFunction) {
+  static async fileDelete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 

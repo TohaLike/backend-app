@@ -3,19 +3,20 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import router from "./routers";
 import { prisma } from "./services/prisma-service";
-import ErrorMiddleware from "./middlewares/error-middleware";
 import cors from "cors";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
+import errorMiddleware from "./middlewares/error-middleware";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-
 const fileConfig = multer.diskStorage({
   destination: (req, file, cb) => {
+    if (!fs.existsSync('files')) fs.mkdirSync('files');
     cb(null, "files/");
   },
   filename: (req, file, cb) => {
@@ -35,8 +36,8 @@ app.use(multer({
   // fileFilter: fileFilter
 }).single("file"))
 
-app.use("/api", router);
-app.use(ErrorMiddleware);
+app.use(router);
+app.use(errorMiddleware);
 
 async function main() {
   try {

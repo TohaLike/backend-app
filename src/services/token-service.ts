@@ -4,14 +4,14 @@ import { prisma } from "./prisma-service";
 import { redis } from "./redis-service";
 
 export class TokenService {
-  static GenerateTokens(payload: object) {
+  static generateTokens(payload: object) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, { expiresIn: "10m" });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: "30d" });
 
     return { accessToken, refreshToken }
   }
 
-  static ValidateAccessToken(token: string): JwtResponse {
+  static validateAccessToken(token: string): JwtResponse {
     try {
       const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET!)
       return userData;
@@ -20,7 +20,7 @@ export class TokenService {
     }
   }
 
-  static ValidateRefreshToken(token: string)  {
+  static validateRefreshToken(token: string)  {
     try {
       const userData = MyJwt.verify<UserProps>(token, process.env.JWT_REFRESH_SECRET!)
       return userData;
@@ -29,7 +29,7 @@ export class TokenService {
     }
   }
 
-  static async SaveToken(userId: string, refreshToken: string, deviceInfo: string) {
+  static async saveToken(userId: string, refreshToken: string, deviceInfo: string) {
     if (!deviceInfo) return;
 
     const tokenData = await prisma.token.findUnique({ where: { userId_deviceInfo: { userId, deviceInfo } } })
@@ -53,12 +53,12 @@ export class TokenService {
     return result !== null;
   }
 
-  static async DeleteToken(refreshToken: string) {
+  static async deleteToken(refreshToken: string) {
     const tokenData = await prisma.token.delete({ where: { refreshToken } });
     return tokenData;
   }
 
-  static async FindToken(refreshToken: string) {
+  static async findToken(refreshToken: string) {
     const tokenData = await prisma.token.findUnique({ where: { refreshToken } });
     return tokenData;
   }

@@ -16,7 +16,7 @@ export class AuthController {
       const { id, password } = req.body;
       const userAgent = req.headers["user-agent"];
 
-      const userData = await AuthService.SignUp(id, password, userAgent);
+      const userData = await AuthService.signUp(id, password, userAgent);
       res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
 
       res.json(userData);
@@ -33,11 +33,11 @@ export class AuthController {
         const message = errors.array().map(err => err.msg).join(", "); 
         return next(ApiError.BadRequest(message))
       };
-      
+
       const { id, password } = req.body;
       const userAgent = req.headers["user-agent"];
 
-      const userData = await AuthService.SignIn(id, password, userAgent)
+      const userData = await AuthService.signIn(id, password, userAgent)
       res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
       res.cookie("accessToken", userData.accessToken, { maxAge: 10 * 60 * 1000 })
 
@@ -53,7 +53,7 @@ export class AuthController {
       const { refreshToken } = req.cookies;
       const userAgent = req.headers["user-agent"];
 
-      const tokenData = await AuthService.NewToken(refreshToken, userAgent);
+      const tokenData = await AuthService.newToken(refreshToken, userAgent);
       res.cookie("refreshToken", tokenData?.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
       res.cookie("accessToken", tokenData?.accessToken, { maxAge: 10 * 60 * 1000 })
 
@@ -68,7 +68,7 @@ export class AuthController {
     try {
       const { refreshToken, accessToken } = req.cookies;
 
-      const logoutData = await AuthService.Logout(refreshToken, accessToken)
+      const logoutData = await AuthService.logout(refreshToken, accessToken)
       res.clearCookie("refreshToken");
 
       res.json(logoutData);
@@ -80,7 +80,7 @@ export class AuthController {
 
   static async Test(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const result = await AuthService.Users()
+      const result = await AuthService.users()
 
       res.json(result)
     } catch (e) {

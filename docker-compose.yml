@@ -6,11 +6,13 @@ services:
       - .env
     ports:
       - ${PORT}:${PORT}
-    depends_on:
-      - mysql
-      - redis-container
     networks:
       - backend-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis-container:
+        condition: service_started
   mysql:
     image: mysql:8
     container_name: mysql-container
@@ -27,6 +29,11 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - backend-network
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   redis-container:
     image: redis:latest

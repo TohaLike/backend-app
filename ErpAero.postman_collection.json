@@ -1,0 +1,379 @@
+{
+	"info": {
+		"_postman_id": "8a56b908-8b8a-4d4a-a7bd-3e263e96d8a2",
+		"name": "ErpAero",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32658959"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "PC",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"antonpaper500@gmail.com\",\n    \"password\": \"123123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/signup",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Windows-PC",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "User-Agent",
+						"value": "Iphone",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"antonpaper500@gmail.com\",\n    \"password\": \"123123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/signin",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin/new_token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/signin/new_token",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"signin",
+						"new_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file/upload",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFudG9ucGFwZXI1MDBAZ21haWwuY29tIiwiaWF0IjoxNzQxMDExMDMxLCJleHAiOjE3NDEwMTE2MzF9.27dRHx0zt1uqYvZZH6EHethdIZTJjIY9WQ2OzNLJqD4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "postman-cloud:///1efe9efb-5507-4820-8ba0-3c95e69acb24"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/file/upload",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"file",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/test",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFudG9ucGFwZXI1MDBAZ21haWwuY29tIiwiaWF0IjoxNzQwOTU5Mzg5LCJleHAiOjE3NDA5NTk5ODl9.bRQtaUtyYDxUTzwaheH0IR_OcBwZHTNDThUuf6CNCk0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/test",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "info",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFudG9ucGFwZXI1MDBAZ21haWwuY29tIiwiaWF0IjoxNzQxMDEwNDU5LCJleHAiOjE3NDEwMTEwNTl9.syjmZ3qCrogmzLNL60zd21tCGncFkL7YDHqIMcbepP0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/logout",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFudG9ucGFwZXI1MDBAZ21haWwuY29tIiwiaWF0IjoxNzQxMDEwNDU5LCJleHAiOjE3NDEwMTEwNTl9.syjmZ3qCrogmzLNL60zd21tCGncFkL7YDHqIMcbepP0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/file/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"file",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file/list",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFudG9ucGFwZXI1MDBAZ21haWwuY29tIiwiaWF0IjoxNzQxMDExMDMxLCJleHAiOjE3NDEwMTE2MzF9.27dRHx0zt1uqYvZZH6EHethdIZTJjIY9WQ2OzNLJqD4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/file/list?page=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"file",
+						"list"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file/download",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFudG9ucGFwZXI1MDBAZ21haWwuY29tIiwiaWF0IjoxNzQxMDEwNjg1LCJleHAiOjE3NDEwMTEyODV9.btuPsvihjdirtA7IZKKqzHfymDxylXWBN0EAR5MAYF4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/file/download/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"file",
+						"download",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file/update",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "postman-cloud:///1efe9ff1-4691-4ce0-9961-2f73aa6cec8f"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/file/update/35",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"file",
+						"update",
+						"35"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file/delete",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/file/delete/3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"file",
+						"delete",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

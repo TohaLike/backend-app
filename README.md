@@ -1,15 +1,11 @@
-Backend API Service
+Backend API Service ErpAero
 
-Описание
-
-Этот проект представляет собой backend-сервис, разработанный на Node.js с использованием Express.js и Prisma для работы с базой данных MySQL. Включает аутентификацию через JWT, поддержку Docker и хранение файлов.
-
-Развертывание локально
+🚀 Развертывание локально
 
 1. Клонирование репозитория
 
-git clone https://github.com/your-repo.git
-cd your-repo
+git clone https://github.com/TohaLike/backend-app.git
+cd backend-app
 
 2. Установка зависимостей
 
@@ -27,6 +23,7 @@ cp .env.example .env
 
 docker compose up -d --build
 
+📌 API Документация
 
 Postman коллекция доступна в файле docs/postman/collection.json. Для импорта в Postman:
 
@@ -35,3 +32,5 @@ Postman коллекция доступна в файле docs/postman/collectio
 Нажать Import → Upload Files
 
 Выбрать ErpAero.postman_collection.json
+
+

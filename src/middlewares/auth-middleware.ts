@@ -3,12 +3,16 @@ import { ApiError } from "../exceptions/api-error";
 import { TokenService } from "../services/token-service";
 import { IGetUserAuthInfoRequest } from "../types";
 
-export default function AuthMiddleware(req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) {
+export default async function AuthMiddleware(req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) {
   try {
     const authorizationHeader = req.headers.authorization;
     const accessToken = authorizationHeader?.split(" ")[1];
-    
+
     if (!accessToken) return next(ApiError.UnauthorizedError());
+
+    const isBlackListed = await TokenService.isTokenBlacklisted(accessToken);
+
+    if (isBlackListed) return next(ApiError.UnauthorizedError());
 
     const userData = TokenService.ValidateAccessToken(accessToken);
 

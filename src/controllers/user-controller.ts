@@ -1,14 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user-service";
+import { IGetUserAuthInfoRequest } from "../types";
 
 export class UserController {
-  static async UserInfo(req: Request, res: Response, next: NextFunction) {
+  static async UserInfo(req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) {
     try {
-      const { refreshToken } = req.cookies;
-
-      const userInfo = await UserService.UserInfo(refreshToken);
-
-      res.json(userInfo);
+      res.json(req.user);
     } catch (e) {
       next(e);
     }

@@ -30,7 +30,6 @@ export class FileService {
     const fileData = await prisma.file.findMany({
       skip: startIndex,
       take: list_size,
-      orderBy: { uploadedAt: "desc" },
     });
 
     return fileData;

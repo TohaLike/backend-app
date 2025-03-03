@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { JwtResponse, TokenProps, UserProps, MyJwt} from "../types";
 import { prisma } from "./prisma-service";
+import { redis } from "./redis-service";
 
 export class TokenService {
   static GenerateTokens(payload: object) {
@@ -40,6 +41,16 @@ export class TokenService {
 
     const token = await prisma.token.create({ data: { userId, refreshToken, deviceInfo }});
     return token;
+  }
+
+
+  static async addToBlackList(token: string) {
+    await redis.set(`blacklist:${token}`, "blacklisted", "EX", 60 * 60 * 24)
+  }
+
+  static async isTokenBlacklisted(token: string) {
+    const result = await redis.get(`blacklist:${token}`);
+    return result !== null;
   }
 
   static async DeleteToken(refreshToken: string) {

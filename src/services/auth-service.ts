@@ -60,8 +60,11 @@ export class AuthService {
     return { ...tokens, user: userDto }
   }
 
-  static async Logout(refreshToken: string) {
+  static async Logout(refreshToken: string, accessToken: any) {
     const token = await TokenService.DeleteToken(refreshToken);
+    
+    await TokenService.addToBlackList(accessToken);
+
     return token;
   }
 

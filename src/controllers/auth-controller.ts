@@ -1,9 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../services/auth-service";
+import { validationResult } from "express-validator";
+import { ApiError } from "../exceptions/api-error";
 
 export class AuthController {
   static async SignUp(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        const message = errors.array().map(err => err.msg).join(", "); 
+        return next(ApiError.BadRequest(message))
+      };
+
       const { id, password } = req.body;
       const userAgent = req.headers["user-agent"];
 
@@ -18,11 +27,19 @@ export class AuthController {
 
   static async SignIn(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        const message = errors.array().map(err => err.msg).join(", "); 
+        return next(ApiError.BadRequest(message))
+      };
+      
       const { id, password } = req.body;
       const userAgent = req.headers["user-agent"];
 
       const userData = await AuthService.SignIn(id, password, userAgent)
       res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+      res.cookie("accessToken", userData.accessToken, { maxAge: 10 * 60 * 1000 })
 
       res.json(userData);
     } catch (e) {
@@ -38,6 +55,7 @@ export class AuthController {
 
       const tokenData = await AuthService.NewToken(refreshToken, userAgent);
       res.cookie("refreshToken", tokenData?.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
+      res.cookie("accessToken", tokenData?.accessToken, { maxAge: 10 * 60 * 1000 })
 
       res.json(tokenData);
     } catch (e) {
@@ -46,11 +64,11 @@ export class AuthController {
   }
 
 
-  static async Logut(req: Request, res: Response, next: NextFunction): Promise<void> {
+  static async Logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { refreshToken } = req.cookies;
+      const { refreshToken, accessToken } = req.cookies;
 
-      const logoutData = await AuthService.Logout(refreshToken)
+      const logoutData = await AuthService.Logout(refreshToken, accessToken)
       res.clearCookie("refreshToken");
 
       res.json(logoutData);
